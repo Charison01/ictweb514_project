@@ -11,14 +11,6 @@ if (!in_array($page, $allowedPages, true)) {
   $page = 'home';
 }
 
-// $action = $_GET['action'] ?? 'list';
-// if ($page === 'addressbook') {
-//   $allowedActions = ['list','create','edit','delete'];
-//   if (!in_array($action, $allowedActions, true)) { $action = 'list'; }
-//   $pageFile = __DIR__ . "/pages/addressbook/{$action}.php";
-// } else {
-//   $pageFile = __DIR__ . "/pages/{$page}.php";
-// }
 
 $action = $_GET['action'] ?? 'list';
 
@@ -31,6 +23,35 @@ if ($page === 'addressbook') {
   $allowedActions = ['list','cart','checkout'];
   if (!in_array($action, $allowedActions, true)) { $action = 'list'; }
   $pageFile = __DIR__ . "/pages/menu/{$action}.php";
+
+} elseif ($page === 'timetable') {
+  $action = $_GET['action'] ?? 'dashboard';
+  $allowed = [
+    'login','logout','dashboard',
+    'admin_courses','admin_course_new','admin_course_edit','admin_course_delete',
+    'teacher_schedule',
+    'student_list','student_enrol','student_unenrol'
+  ];
+  if (!in_array($action, $allowed, true)) { $action = 'dashboard'; }
+
+  $map = [
+    'login' => 'timetable/login.php',
+    'logout' => 'timetable/logout.php',
+    'dashboard' => 'timetable/dashboard.php',
+
+    'admin_courses' => 'timetable/admin/courses_list.php',
+    'admin_course_new' => 'timetable/admin/courses_create.php',
+    'admin_course_edit' => 'timetable/admin/courses_edit.php',
+    'admin_course_delete' => 'timetable/admin/courses_delete.php',
+
+    'teacher_schedule' => 'timetable/teacher/schedule.php',
+
+    'student_list' => 'timetable/student/list.php',
+    'student_enrol' => 'timetable/student/enrol.php',
+    'student_unenrol' => 'timetable/student/unenrol.php',
+  ];
+
+  $pageFile = __DIR__ . '/pages/' . $map[$action];
 
 } else {
   $pageFile = __DIR__ . "/pages/{$page}.php";
