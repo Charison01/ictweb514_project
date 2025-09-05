@@ -1,18 +1,25 @@
 <?php
 // public/index.php
-
-// (Optional) Show errors in dev; hide in prod
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+session_start();
 
-// Determine requested page (whitelist)
+// whitelist
 $allowedPages = ['home', 'addressbook', 'menu', 'timetable'];
 $page = $_GET['page'] ?? 'home';
 if (!in_array($page, $allowedPages, true)) {
   $page = 'home';
 }
 
-// Title + current page for UI
+$action = $_GET['action'] ?? 'list';
+if ($page === 'addressbook') {
+  $allowedActions = ['list','create','edit','delete'];
+  if (!in_array($action, $allowedActions, true)) { $action = 'list'; }
+  $pageFile = __DIR__ . "/pages/addressbook/{$action}.php";
+} else {
+  $pageFile = __DIR__ . "/pages/{$page}.php";
+}
+
 $titles = [
   'home'        => 'Home · ICTWEB514',
   'addressbook' => 'Address Book · ICTWEB514',
@@ -22,9 +29,8 @@ $titles = [
 $title = $titles[$page] ?? 'ICTWEB514 Project';
 $currentPage = $page;
 
-// Capture page content
+// capture page-specific content
 ob_start();
-$pageFile = __DIR__ . "/pages/{$page}.php";
 if (file_exists($pageFile)) {
   include $pageFile;
 } else {
@@ -32,5 +38,5 @@ if (file_exists($pageFile)) {
 }
 $content = ob_get_clean();
 
-// Render inside the layout
+// render
 include __DIR__ . '/../templates/layout.php';
