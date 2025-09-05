@@ -11,14 +11,31 @@ if (!in_array($page, $allowedPages, true)) {
   $page = 'home';
 }
 
+// $action = $_GET['action'] ?? 'list';
+// if ($page === 'addressbook') {
+//   $allowedActions = ['list','create','edit','delete'];
+//   if (!in_array($action, $allowedActions, true)) { $action = 'list'; }
+//   $pageFile = __DIR__ . "/pages/addressbook/{$action}.php";
+// } else {
+//   $pageFile = __DIR__ . "/pages/{$page}.php";
+// }
+
 $action = $_GET['action'] ?? 'list';
+
 if ($page === 'addressbook') {
   $allowedActions = ['list','create','edit','delete'];
   if (!in_array($action, $allowedActions, true)) { $action = 'list'; }
   $pageFile = __DIR__ . "/pages/addressbook/{$action}.php";
+
+} elseif ($page === 'menu') {
+  $allowedActions = ['list','cart','checkout'];
+  if (!in_array($action, $allowedActions, true)) { $action = 'list'; }
+  $pageFile = __DIR__ . "/pages/menu/{$action}.php";
+
 } else {
   $pageFile = __DIR__ . "/pages/{$page}.php";
 }
+
 
 $titles = [
   'home'        => 'Home · ICTWEB514',
